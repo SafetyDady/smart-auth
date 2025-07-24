@@ -1,0 +1,97 @@
+graph TB
+    %% Users & Access Points
+    subgraph Users["👥 Users & Access Points"]
+        SA[Super Admin<br/>Web Dashboard]
+        VA[Village Admin<br/>Web Dashboard]
+        AA[Accounting Admin<br/>Web Dashboard]
+        RES[Residents<br/>LINE LIFF PWA]
+        VIS[Visitors<br/>QR Access]
+    end
+
+    %% Frontend Layer
+    subgraph Frontend["🖥️ Frontend Layer"]
+        LP[Landing Page<br/>Next.js + TypeScript<br/>📍 Deployed on Vercel]
+        AD[Admin Dashboard<br/>React + TypeScript + Vite<br/>📍 Deployed on Vercel]
+        LIFF[LIFF PWA<br/>React + LINE LIFF SDK<br/>📍 Deployed on Vercel]
+        ACU[Access Control UI<br/>QR + LPR Management<br/>📍 Integrated]
+    end
+
+    %% Backend Layer
+    subgraph Backend["⚙️ Backend Layer"]
+        API[Backend API<br/>FastAPI + Python 3.11<br/>JWT Authentication + ISAPI Client<br/>🚀 Deployed on Railway]
+    end
+
+    %% Device Layer
+    subgraph Devices["📡 Device Layer"]
+        LPR[LPR Cameras<br/>ISAPI v2.0<br/>DS-2CD7A26G0]
+        QRS[QR Scanners<br/>Gate Access<br/>Mobile/Fixed]
+        GATE[Smart Gates<br/>Automated<br/>Barrier Control]
+    end
+
+    %% Database & Cache Layer
+    subgraph Database["🗄️ Database & Cache Layer"]
+        PG[PostgreSQL 15<br/>Primary Database<br/>17 Tables + Indexes]
+        REDIS[Redis<br/>Cache & Sessions<br/>JWT + Device State]
+    end
+
+    %% External Services
+    subgraph External["🌐 External Services"]
+        LINE[LINE Platform<br/>LIFF + Messaging + Notify]
+        BANK[Banking APIs<br/>Payment Gateway + Verification]
+        OCR[AI OCR Service<br/>Receipt Processing + Slip Verification]
+        STORAGE[Cloud Storage<br/>File Management + Image Storage]
+        EMAIL[Email Service<br/>SMTP + Templates + Notifications]
+    end
+
+    %% User Connections
+    SA -->|HTTPS| LP
+    SA -->|HTTPS| AD
+    VA -->|HTTPS| AD
+    AA -->|HTTPS| AD
+    RES -->|HTTPS| LIFF
+    VIS -->|QR Scan| ACU
+
+    %% Frontend to Backend
+    LP -->|REST API| API
+    AD -->|REST API| API
+    LIFF -->|REST API| API
+    ACU -->|REST API| API
+
+    %% Backend to Database
+    API -->|SQL| PG
+    API -->|Redis Protocol| REDIS
+
+    %% Backend to External Services
+    API -->|LINE API| LINE
+    API -->|Banking API| BANK
+    API -->|OCR API| OCR
+    API -->|Storage API| STORAGE
+    API -->|SMTP| EMAIL
+
+    %% Backend to Devices
+    API -->|ISAPI v2.0| LPR
+    API -->|HTTP/WebSocket| QRS
+    API -->|Control Protocol| GATE
+
+    %% Device Interactions
+    LPR -->|ANPR Events| API
+    QRS -->|Scan Events| API
+    GATE -->|Status Updates| API
+
+    %% Styling
+    classDef userClass fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    classDef frontendClass fill:#2C3E50,stroke:#1B2631,stroke-width:2px,color:#fff
+    classDef backendClass fill:#34495E,stroke:#2C3E50,stroke-width:2px,color:#fff
+    classDef databaseClass fill:#27AE60,stroke:#1E8449,stroke-width:2px,color:#fff
+    classDef externalClass fill:#F39C12,stroke:#D68910,stroke-width:2px,color:#fff
+    classDef deviceClass fill:#8E44AD,stroke:#7D3C98,stroke-width:2px,color:#fff
+    classDef landingClass fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff
+
+    class SA,VA,AA,RES,VIS userClass
+    class AD,LIFF,ACU frontendClass
+    class LP landingClass
+    class API backendClass
+    class PG,REDIS databaseClass
+    class LINE,BANK,OCR,STORAGE,EMAIL externalClass
+    class LPR,QRS,GATE deviceClass
+
