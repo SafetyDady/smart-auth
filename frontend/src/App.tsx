@@ -19,17 +19,14 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        setUser(parsedUser);
-      } catch (err) {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
-      }
-    }
+    // สำหรับการ Demo: สร้าง mock user data เพื่อแสดง Dashboard โดยตรง
+    const mockUser: User = {
+      username: 'superadmin',
+      full_name: 'Super Admin',
+      role: 'ผู้ดูแลระบบหลัก',
+      email: 'superadmin@smartvillage.com'
+    };
+    setUser(mockUser);
     setLoading(false);
   }, []);
 
