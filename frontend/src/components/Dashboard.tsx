@@ -20,403 +20,542 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
+  const sidebarStyle: React.CSSProperties = {
+    transform: sidebarCollapsed ? 'translateX(-100%)' : 'translateX(0)',
+  };
+
+  const mainContentStyle: React.CSSProperties = {
+    marginLeft: sidebarCollapsed ? '0' : '280px',
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div style={{ fontFamily: "'Prompt', sans-serif", background: '#F8F9FA', color: '#333', overflowX: 'hidden' }}>
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-green-900 text-white flex items-center justify-between px-6 shadow">
-        <div className="flex items-center gap-4">
+      <header style={{
+        background: '#1A2B48',
+        color: 'white',
+        height: '70px',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 20px',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button
             onClick={toggleSidebar}
-            className="text-white text-2xl p-2 bg-transparent rounded hover:bg-green-800 focus:outline-none"
-            aria-label="Toggle sidebar"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              fontSize: '20px',
+              cursor: 'pointer',
+              padding: '10px',
+              borderRadius: '8px',
+              transition: 'background 0.3s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
           >
-            ☰
+            <i className="fas fa-bars"></i>
           </button>
-          <div className="flex items-center gap-3">
-            <div className="bg-white text-green-900 w-8 h-8 rounded flex items-center justify-center text-base font-bold shadow-sm">
-              🏠
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              background: '#28A745',
+              color: 'white',
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '18px'
+            }}>
+              <i className="fas fa-home"></i>
             </div>
-            <span className="text-lg font-semibold tracking-wide">Smart Village</span>
+            <span style={{ fontSize: '18px', fontWeight: 600 }}>Smart Village</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <UserMenu />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <UserMenu user={user} onLogout={onLogout} />
         </div>
       </header>
 
       {/* Sidebar */}
-      <aside
-        className={`fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white shadow-lg border-r border-gray-200 transition-transform duration-300 ${sidebarCollapsed ? '-translate-x-64' : 'translate-x-0'}`}
-      >
-        <div className="p-4 border-b border-gray-200">
-          <h3 className="font-semibold text-gray-800 text-lg mb-0">Super Admin Panel</h3>
-          <p className="text-xs text-gray-500 mt-1">ระบบจัดการหมู่บ้าน</p>
+      <aside style={{
+        background: 'white',
+        width: '280px',
+        height: 'calc(100vh - 70px)',
+        position: 'fixed',
+        top: '70px',
+        left: 0,
+        zIndex: 999,
+        boxShadow: '2px 0 10px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.3s ease',
+        overflowY: 'auto',
+        ...sidebarStyle
+      }}>
+        <div style={{ padding: '20px', borderBottom: '1px solid #E5E7EB' }}>
+          <h3 style={{ color: '#1A2B48', fontSize: '18px', fontWeight: 600, marginBottom: '5px' }}>
+            Super Admin Panel
+          </h3>
+          <p style={{ color: '#6B7280', fontSize: '12px' }}>ระบบจัดการหมู่บ้าน</p>
         </div>
-        <nav className="py-2 flex flex-col gap-1">
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-blue-900 bg-blue-100 border-r-4 border-blue-500 font-medium text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">📊</span>
+        
+        <nav style={{ padding: '20px 0' }}>
+          <a href="#" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '15px',
+            padding: '15px 20px',
+            color: '#1A2B48',
+            textDecoration: 'none',
+            fontSize: '14px',
+            fontWeight: 500,
+            background: '#EBF4FF',
+            borderLeft: '3px solid #1A2B48'
+          }}>
+            <i className="fas fa-chart-bar" style={{ width: '20px', textAlign: 'center' }}></i>
             <span>Dashboard</span>
           </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">👥</span>
-            <span>User Management</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">📍</span>
-            <span>Village Management</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">🛡️</span>
-            <span>VillageAdmin Dashboard</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">🧮</span>
-            <span>VillageAccounting Dashboard</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">📈</span>
-            <span>Monitoring & Analytics</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:text-blue-700 hover:bg-blue-50 text-sm rounded-r transition-colors">
-            <span className="w-4 text-center">⚙️</span>
-            <span>System Configuration</span>
-          </a>
+          
+          {[
+            { icon: 'fas fa-users', text: 'User Management' },
+            { icon: 'fas fa-building', text: 'Village Management' },
+            { icon: 'fas fa-user-shield', text: 'VillageAdmin Dashboard' },
+            { icon: 'fas fa-calculator', text: 'VillageAccounting Dashboard' },
+            { icon: 'fas fa-chart-line', text: 'Monitoring & Analytics' },
+            { icon: 'fas fa-cogs', text: 'System Configuration' }
+          ].map((item, index) => (
+            <a key={index} href="#" style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '15px',
+              padding: '15px 20px',
+              color: '#6B7280',
+              textDecoration: 'none',
+              fontSize: '14px',
+              transition: 'all 0.3s ease',
+              borderLeft: '3px solid transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#1A2B48';
+              e.currentTarget.style.background = '#F3F4F6';
+              e.currentTarget.style.borderLeftColor = '#1A2B48';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#6B7280';
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.borderLeftColor = 'transparent';
+            }}>
+              <i className={item.icon} style={{ width: '20px', textAlign: 'center' }}></i>
+              <span>{item.text}</span>
+            </a>
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main
-        className={`transition-all duration-300 pt-16 pb-6 px-6 min-h-[calc(100vh-4rem)] ${sidebarCollapsed ? 'ml-0' : 'ml-64'}`}
-      >
+      <main style={{
+        marginTop: '70px',
+        padding: '30px',
+        minHeight: 'calc(100vh - 70px)',
+        transition: 'margin-left 0.3s ease',
+        ...mainContentStyle
+      }}>
         {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">Dashboard</h1>
-          <p className="text-gray-500">ภาพรวมระบบ Smart Village Management System</p>
+        <div style={{ marginBottom: '30px' }}>
+          <h1 style={{ fontSize: '30px', fontWeight: 600, color: '#1A2B48', marginBottom: '8px' }}>
+            Dashboard
+          </h1>
+          <p style={{ color: '#6B7280' }}>ภาพรวมระบบ Smart Village Management System</p>
         </div>
 
-        {/* Dashboard Cards - 4 Cards แนวนอน */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '24px',
-          marginBottom: '32px'
+        {/* Dashboard Cards Grid */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+          gap: '25px',
+          marginBottom: '30px'
         }}>
-          {/* ผู้ใช้งานทั้งหมด */}
+          {/* Card 1: ผู้ใช้งานทั้งหมด */}
           <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            border: '1px solid #e5e7eb'
+            background: 'white',
+            borderRadius: '16px',
+            padding: '25px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', margin: 0 }}>ผู้ใช้งานทั้งหมด</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#1A2B48', margin: 0 }}>
+                ผู้ใช้งานทั้งหมด
+              </h3>
               <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundColor: '#3b82f6',
-                borderRadius: '8px',
+                width: '50px',
+                height: '50px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '20px'
+                fontSize: '24px',
+                color: 'white'
               }}>
-                👥
+                <i className="fas fa-users"></i>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>Village Admin</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>32 คน</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>Village Admin</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>32 คน</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>Village Accounting</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>15 คน</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>Village Accounting</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>15 คน</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
-                <span style={{ color: '#6b7280' }}>รวมทั้งหมด</span>
-                <span style={{ fontWeight: 'bold', color: '#059669' }}>47 คน</span>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                paddingTop: '12px',
+                borderTop: '1px solid #E5E7EB'
+              }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>รวมทั้งหมด</span>
+                <span style={{
+                  background: '#ECFDF5',
+                  color: '#059669',
+                  padding: '4px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>47 คน</span>
               </div>
             </div>
           </div>
 
-          {/* หมู่บ้านในระบบ */}
+          {/* Card 2: หมู่บ้านในระบบ */}
           <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            border: '1px solid #e5e7eb'
+            background: 'white',
+            borderRadius: '16px',
+            padding: '25px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', margin: 0 }}>หมู่บ้านในระบบ</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#1A2B48', margin: 0 }}>
+                หมู่บ้านในระบบ
+              </h3>
               <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundColor: '#10b981',
-                borderRadius: '8px',
+                width: '50px',
+                height: '50px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #28A745, #059669)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '20px'
+                fontSize: '24px',
+                color: 'white'
               }}>
-                🏠
+                <i className="fas fa-building"></i>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>หมู่บ้านที่ลงทะเบียน</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>24 แห่ง</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>หมู่บ้านที่ลงทะเบียน</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>24 แห่ง</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>ทรัพย์สินทั้งหมด</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>2,847 หน่วย</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>ทรัพย์สินทั้งหมด</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>2,847 หน่วย</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
-                <span style={{ color: '#6b7280' }}>อัตราการใช้งาน</span>
-                <span style={{ fontWeight: 'bold', color: '#059669' }}>96.2%</span>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                paddingTop: '12px',
+                borderTop: '1px solid #E5E7EB'
+              }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>อัตราการใช้งาน</span>
+                <span style={{
+                  background: '#ECFDF5',
+                  color: '#059669',
+                  padding: '4px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>96.2%</span>
               </div>
             </div>
           </div>
 
-          {/* ระบบการเงิน */}
+          {/* Card 3: ระบบการเงิน */}
           <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            border: '1px solid #e5e7eb'
+            background: 'white',
+            borderRadius: '16px',
+            padding: '25px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', margin: 0 }}>ระบบการเงิน</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#1A2B48', margin: 0 }}>
+                ระบบการเงิน
+              </h3>
               <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundColor: '#8b5cf6',
-                borderRadius: '8px',
+                width: '50px',
+                height: '50px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '20px'
+                fontSize: '24px',
+                color: 'white'
               }}>
-                📈
+                <i className="fas fa-chart-pie"></i>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>รายได้เดือนนี้</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>฿2.4M</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>รายได้เดือนนี้</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>฿2.4M</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>ค่าใช้จ่าย</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>฿180K</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>ค้างชำระ</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>฿180K</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
-                <span style={{ color: '#6b7280' }}>อัตราการออม</span>
-                <span style={{ fontWeight: 'bold', color: '#059669' }}>92.5%</span>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                paddingTop: '12px',
+                borderTop: '1px solid #E5E7EB'
+              }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>อัตราการชำระ</span>
+                <span style={{
+                  background: '#ECFDF5',
+                  color: '#059669',
+                  padding: '4px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>92.5%</span>
               </div>
             </div>
           </div>
 
-          {/* ระบบรักษาความปลอดภัย */}
+          {/* Card 4: ระบบรักษาความปลอดภัย */}
           <div style={{
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            padding: '24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            border: '1px solid #e5e7eb'
+            background: 'white',
+            borderRadius: '16px',
+            padding: '25px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#374151', margin: 0 }}>ระบบรักษาความปลอดภัย</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#1A2B48', margin: 0 }}>
+                ระบบรักษาความปลอดภัย
+              </h3>
               <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundColor: '#f59e0b',
-                borderRadius: '8px',
+                width: '50px',
+                height: '50px',
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #F59E0B, #D97706)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '20px'
+                fontSize: '24px',
+                color: 'white'
               }}>
-                🛡️
+                <i className="fas fa-shield-alt"></i>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>การเข้า-ออกวันนี้</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>1,247 ครั้ง</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>การเข้า-ออกวันนี้</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>1,247 ครั้ง</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#6b7280' }}>แขกที่มาเยือน</span>
-                <span style={{ fontWeight: '600', color: '#374151' }}>89 คน</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>แขกผู้มาเยือน</span>
+                <span style={{ fontWeight: 600, color: '#1A2B48' }}>89 คน</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
-                <span style={{ color: '#6b7280' }}>สถานะระบบ</span>
-                <span style={{ fontWeight: 'bold', color: '#059669' }}>ปกติ</span>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                paddingTop: '12px',
+                borderTop: '1px solid #E5E7EB'
+              }}>
+                <span style={{ fontSize: '14px', color: '#6B7280' }}>สถานะระบบ</span>
+                <span style={{
+                  background: '#ECFDF5',
+                  color: '#059669',
+                  padding: '4px 12px',
+                  borderRadius: '9999px',
+                  fontSize: '12px',
+                  fontWeight: 500
+                }}>ปกติ</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* การดำเนินการด่วน */}
+        {/* Quick Actions */}
         <div style={{
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          padding: '24px',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-          border: '1px solid #e5e7eb',
-          marginBottom: '32px'
+          background: 'white',
+          borderRadius: '16px',
+          padding: '25px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          marginBottom: '30px'
         }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#374151', marginBottom: '16px' }}>การดำเนินการด่วน</h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '16px'
+          <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#1A2B48', marginBottom: '20px' }}>
+            การดำเนินการด่วน
+          </h3>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gap: '16px' 
           }}>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              backgroundColor: '#f9fafb',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}>
-              <span style={{ color: '#6b7280' }}>👤</span>
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>เพิ่มผู้ใช้งานใหม่</span>
-            </button>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              backgroundColor: '#f9fafb',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}>
-              <span style={{ color: '#6b7280' }}>➕</span>
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>เพิ่มหมู่บ้านใหม่</span>
-            </button>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              backgroundColor: '#f9fafb',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}>
-              <span style={{ color: '#6b7280' }}>📄</span>
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>ดูรายงานระบบ</span>
-            </button>
-            <button style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              backgroundColor: '#f9fafb',
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}>
-              <span style={{ color: '#6b7280' }}>⚙️</span>
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>ตั้งค่าระบบ</span>
-            </button>
+            {[
+              { icon: 'fas fa-user-plus', text: 'เพิ่มผู้ใช้งานใหม่' },
+              { icon: 'fas fa-building', text: 'เพิ่มหมู่บ้านใหม่' },
+              { icon: 'fas fa-chart-bar', text: 'ดูรายงานระบบ' },
+              { icon: 'fas fa-cogs', text: 'ตั้งค่าระบบ' }
+            ].map((action, index) => (
+              <button key={index} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '16px',
+                background: '#F8F9FA',
+                color: '#4B5563',
+                border: '2px solid #E5E7EB',
+                borderRadius: '12px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                transform: 'translateY(0)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#1A2B48';
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.borderColor = '#1A2B48';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#F8F9FA';
+                e.currentTarget.style.color = '#4B5563';
+                e.currentTarget.style.borderColor = '#E5E7EB';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}>
+                <i className={action.icon} style={{ fontSize: '18px' }}></i>
+                <span style={{ fontSize: '14px', fontWeight: 500 }}>{action.text}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* กิจกรรมล่าสุด */}
+        {/* Recent Activity */}
         <div style={{
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          padding: '24px',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-          border: '1px solid #e5e7eb'
+          background: 'white',
+          borderRadius: '16px',
+          padding: '25px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
         }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#374151', marginBottom: '16px' }}>กิจกรรมล่าสุด</h2>
+          <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#1A2B48', marginBottom: '20px' }}>
+            กิจกรรมล่าสุด
+          </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '16px',
-              padding: '12px',
-              backgroundColor: '#f9fafb',
-              borderRadius: '8px'
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '50%',
+            {[
+              { 
+                icon: 'fas fa-user', 
+                iconColor: '#28A745',
+                text: 'เพิ่มผู้ใช้งาน Village Admin ใหม่ที่หมู่บ้าน "บ้านสวนลิลลี่"',
+                time: '5 นาทีที่แล้ว'
+              },
+              { 
+                icon: 'fas fa-building', 
+                iconColor: '#28A745',
+                text: 'อัปเดตข้อมูลหมู่บ้าน "เดอะ พาร์ค วิลเลจ" เรียบร้อยแล้ว',
+                time: '15 นาทีที่แล้ว'
+              },
+              { 
+                icon: 'fas fa-chart-line', 
+                iconColor: '#8B5CF6',
+                text: 'สร้างรายงานการเงินประจำเดือนสำเร็จแล้ว',
+                time: '1 ชั่วโมงที่แล้ว'
+              }
+            ].map((activity, index) => (
+              <div key={index} style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
+                gap: '16px',
+                padding: '16px',
+                borderRadius: '12px',
+                background: '#F8F9FA'
               }}>
-                👤
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: activity.iconColor,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '14px'
+                }}>
+                  <i className={activity.icon}></i>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '14px', fontWeight: 500, color: '#1A2B48' }}>
+                    {activity.text}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '4px' }}>
+                    {activity.time}
+                  </div>
+                </div>
               </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '14px', fontWeight: '500', color: '#374151', margin: 0 }}>เพิ่มผู้ใช้งาน Village Admin ใหม่ที่หมู่บ้าน "บ้านสวนดอก"</p>
-                <p style={{ fontSize: '12px', color: '#6b7280', margin: '4px 0 0 0' }}>5 นาทีที่แล้ว</p>
-              </div>
-            </div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '16px',
-              padding: '12px',
-              backgroundColor: '#f9fafb',
-              borderRadius: '8px'
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                backgroundColor: '#dcfce7',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                🏠
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '14px', fontWeight: '500', color: '#374151', margin: 0 }}>อัปเดตข้อมูลหมู่บ้าน "บ้าน หรือ วิลล์ วิลเลจ" เรียบร้อยแล้ว</p>
-                <p style={{ fontSize: '12px', color: '#6b7280', margin: '4px 0 0 0' }}>15 นาทีที่แล้ว</p>
-              </div>
-            </div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '16px',
-              padding: '12px',
-              backgroundColor: '#f9fafb',
-              borderRadius: '8px'
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                backgroundColor: '#f3e8ff',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                📊
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: '14px', fontWeight: '500', color: '#374151', margin: 0 }}>สร้างรายงานการเงินประจำเดือนสำเร็จแล้ว</p>
-                <p style={{ fontSize: '12px', color: '#6b7280', margin: '4px 0 0 0' }}>1 ชั่วโมงที่แล้ว</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </main>
@@ -425,4 +564,3 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
 };
 
 export default Dashboard;
-
