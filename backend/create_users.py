@@ -45,6 +45,30 @@ def create_test_users():
                 full_name='Village Accounting', 
                 role=UserRole.VILLAGE_ACCOUNTING, 
                 is_active=True
+            ),
+            User(
+                username='testuser1', 
+                email='test1@example.com', 
+                hashed_password=get_password_hash('123456'), 
+                full_name='Test User 1', 
+                role=UserRole.VILLAGE_ACCOUNTING, 
+                is_active=True
+            ),
+            User(
+                username='testuser2', 
+                email='test2@example.com', 
+                hashed_password=get_password_hash('123456'), 
+                full_name='Test User 2', 
+                role=UserRole.VILLAGE_ADMIN, 
+                is_active=False
+            ),
+            User(
+                username='johndoe', 
+                email='john@example.com', 
+                hashed_password=get_password_hash('123456'), 
+                full_name='John Doe', 
+                role=UserRole.VILLAGE_ACCOUNTING, 
+                is_active=True
             )
         ]
         

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ChangePassword from './ChangePassword';
 import EditProfile from './EditProfile';
 import Profile from './Profile';
+import UserManagement from './UserManagement';
 
 interface User {
   username: string;
@@ -313,6 +314,21 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
               </p>
             </div>
             <ChangePassword />
+          </div>
+        )}
+
+        {/* User Management Page */}
+        {activePage === 'user-management' && (
+          <div>
+            <div style={{ marginBottom: '30px' }}>
+              <h1 style={{ fontSize: '28px', fontWeight: 600, color: '#1A2B48', marginBottom: '8px' }}>
+                User Management
+              </h1>
+              <p style={{ fontSize: '16px', color: '#6B7280' }}>
+                จัดการผู้ใช้งานระบบ
+              </p>
+            </div>
+            <UserManagement />
           </div>
         )}
 
